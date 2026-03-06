@@ -1,0 +1,325 @@
+:root {
+    --bg-color: #f0f4f8;
+    --primary: #6c5ce7;
+    --secondary: #00b894;
+    --accent: #fdcb6e;
+    --card-bg: #ffffff;
+    --text-main: #2d3436;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+}
+
+.game-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- STATS BAR --- */
+.stats-bar {
+    background: var(--primary);
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.stat-item .label { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+.stat-item .value { font-size: 1.2rem; font-weight: 800; }
+
+/* --- CONTENT GRID --- */
+.game-content {
+    flex: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.game-header { text-align: center; margin-bottom: 30px; }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+/* --- DEPARTMENT CARDS --- */
+.dept-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border: 2px solid transparent;
+}
+
+.dept-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent);
+}
+
+.dept-icon {
+    font-size: 2.5rem;
+    background: rgba(253, 203, 110, 0.15); 
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+}
+
+/* COMBINED DEPT-INFO */
+.dept-info { 
+    flex: 1; 
+    min-width: 0; 
+    overflow: hidden; 
+}
+.dept-info h3 { margin: 0 0 5px 0; font-size: .9rem; }
+.dept-info p { margin: 0; font-size: 0.9rem; color: #636e72; }
+
+/* --- BUTTONS --- */
+.buy-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 15px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 90px;
+    transition: background 0.2s;
+}
+
+.buy-btn:hover { background: #00a884; }
+.buy-btn span { display: block; font-size: 0.75rem; opacity: 0.9; margin-top: 2px; }
+
+/* --- MODAL STYLES --- */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.modal-icon { font-size: 5rem; margin-bottom: 15px; }
+.close-btn { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: #b2bec3; }
+.modal-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: #636e72; }
+
+.discovery-title {
+    color: #2ecc71;
+    font-size: 1.5rem;
+    margin: 10px 0;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#modal-desc {
+    color: #636e72;
+    font-style: italic;
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+/* --- STATES (LOCKED / UNLOCKABLE) --- */
+.dept-card.locked {
+    cursor: not-allowed;
+    background: #fff9e6;
+    border: 2px dashed #ffeaa7;
+    opacity: 0.7;
+}
+
+.dept-card.locked:hover { transform: none; }
+
+.dept-card.locked .dept-icon {
+    filter: sepia(1) saturate(2) hue-rotate(-10deg) opacity(0.5);
+}
+
+/* Ensure the button inside a locked card looks disabled */
+.locked .buy-btn {
+    background: #95a5a6;
+    cursor: not-allowed;
+}
+
+.can-unlock {
+    background: linear-gradient(135deg, #ffffff 0%, #fffbe6 100%) !important;
+    border: 2px solid #fdcb6e !important;
+    opacity: 1 !important;
+    animation: pulse-gold 2s infinite;
+    box-shadow: 0 10px 25px rgba(253, 203, 110, 0.3);
+    cursor: pointer !important;
+}
+
+.can-unlock .unlock-msg {
+    color: #d35400;
+    font-weight: bold;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    text-shadow: 0 1px 2px rgba(255,255,255,0.5);
+}
+
+.can-unlock .buy-btn {
+    background: linear-gradient(to bottom, #ffeaa7, #fdcb6e) !important;
+    color: #2d3436 !important;
+    border: 1px solid #e67e22;
+    box-shadow: 0 4px 0 #e67e22;
+    cursor: pointer !important;
+}
+
+.can-unlock .buy-btn:active {
+    box-shadow: none;
+    transform: translateY(2px);
+}
+
+/* --- UI ELEMENTS --- */
+.card-item-title {
+    color: var(--secondary);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: -3px 0 5px 0;
+    opacity: 0.9;
+    display: block;
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    height: 8px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--secondary);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+/* --- ANIMATIONS & BUTTONS --- */
+@keyframes pulse-gold {
+    0% { box-shadow: 0 0 0 0 rgba(253, 203, 110, 0.6); }
+    70% { box-shadow: 0 0 0 15px rgba(253, 203, 110, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(253, 203, 110, 0); }
+}
+
+.multiplier-btn {
+    background: rgba(255,255,255,0.2);
+    border: 2px solid white;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+.multiplier-btn:hover { background: white; color: var(--primary); }
+
+.multiplier-btn.playing {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    box-shadow: 0 0 10px rgba(0, 184, 148, 0.4);
+}
+
+
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    background: #2d3436;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    border-left: 5px solid var(--accent);
+    animation: slideIn 0.3s ease-out forwards;
+    font-weight: 500;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast.error { border-left-color: #ff7675; }
+.toast.success { border-left-color: #55efc4; }
+
+/* Fade out animation */
+.toast.fade-out {
+    animation: slideOut 0.3s ease-in forwards;
+}
+
+@keyframes slideOut {
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+
+
+
+
+
+
+.dept-card.future-locked {
+    background: #dfe6e9;
+    border: 2px solid #b2bec3;
+    opacity: 0.5;
+    cursor: help;
+    filter: blur(0.5px); /* Optional: makes it look "hazy" or undiscovered */
+    transition: filter 0.3s;
+}
+
+.dept-card.future-locked:hover {
+    filter: blur(0);
+    transform: none; /* Don't lift up like active cards */
+}
+
+.dept-card.future-locked .dept-icon {
+    background: #b2bec3;
+    color: #636e72;
+}
